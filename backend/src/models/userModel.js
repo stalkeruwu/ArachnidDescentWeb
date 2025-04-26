@@ -13,4 +13,23 @@ async function getUserByEmail(email) {
     return rows[0];
 }
 
-module.exports = { createUser, getUserByEmail };
+async function updateUserVerificationToken(userId, token) {
+    await db.query('UPDATE users SET verification_token = ? WHERE id = ?', [token, userId]);
+}
+
+async function getUserByVerificationToken(token) {
+    const [rows] = await db.query('SELECT * FROM users WHERE verification_token = ?', [token]);
+    return rows[0];
+}
+
+async function markUserAsVerified(userId) {
+    await db.query('UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE id = ?', [userId]);
+}
+
+module.exports = {
+     createUser,
+      getUserByEmail,
+       updateUserVerificationToken,
+        getUserByVerificationToken,
+         markUserAsVerified 
+        };

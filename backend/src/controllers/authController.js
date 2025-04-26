@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { createUser, getUserByEmail } = require('../models/userModel');
+const crypto = require('crypto');
+const sgMail = require('../config/sendgridConfig');
+const { createUser, getUserByEmail, updateUserVerificationToken, getUserByVerificationToken, markUserAsVerified } = require('../models/userModel');
 
 async function registerUser(req, res) {
     const { username, email, password } = req.body;
@@ -14,11 +16,48 @@ async function registerUser(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = await createUser(username, email, hashedPassword);
 
-        const token = jwt.sign({ id: userId, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(201).json({ message: 'User registered successfully', token });
+        // Generate a unique verification token
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        await updateUserVerificationToken(userId, verificationToken);
+
+        // Send verification email
+        const verificationUrl = `https://3130-94-27-212-238.ngrok-free.app/api/auth/verify-email?token=${verificationToken}`;
+        await sendVerificationEmail(email, verificationUrl);
+
+        res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
     } catch (error) {
-        console.error('Error in registerUser:', error); // Log the error
+        console.error('Error in registerUser:', error);
         res.status(500).json({ error: 'Error registering user' });
+    }
+}
+
+async function sendVerificationEmail(email, verificationUrl) {
+    const msg = {
+        to: email,
+        from: 'noreply@arachnid-descent.games', // Replace with your verified SendGrid sender email
+        subject: 'Verify Your Email - Arachnid Descent',
+        html: `<p>Thank you for registering for Arachnid Descent!</p>
+               <p>Please verify your email by clicking the link below:</p>
+               <a href="${verificationUrl}">${verificationUrl}</a>`,
+    };
+
+    await sgMail.send(msg);
+}
+
+async function verifyEmail(req, res) {
+    const { token } = req.query;
+
+    try {
+        const user = await getUserByVerificationToken(token);
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid or expired token' });
+        }
+
+        await markUserAsVerified(user.id);
+        res.status(200).json({ message: 'Email verified successfully!' });
+    } catch (error) {
+        console.error('Error in verifyEmail:', error);
+        res.status(500).json({ error: 'Error verifying email' });
     }
 }
 
@@ -29,6 +68,10 @@ async function loginUser(req, res) {
         const user = await getUserByEmail(email);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (!user.is_verified) {
+            return res.status(403).json({ error: 'Please verify your email before logging in' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password_hash);
@@ -45,4 +88,4 @@ async function loginUser(req, res) {
 
 
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, verifyEmail };
