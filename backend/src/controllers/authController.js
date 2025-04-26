@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sgMail = require('../config/sendgridConfig');
-const { createUser, getUserByEmail, updateUserVerificationToken, getUserByVerificationToken, markUserAsVerified } = require('../models/userModel');
+const { createUser, getUserByEmail, updateUserVerificationToken, getUserByVerificationToken, markUserAsVerified, updateResetPasswordToken, getUserByResetToken, updatePassword } = require('../models/userModel');
 
 async function registerUser(req, res) {
     const { username, email, password } = req.body;
@@ -21,7 +21,7 @@ async function registerUser(req, res) {
         await updateUserVerificationToken(userId, verificationToken);
 
         // Send verification email
-        const verificationUrl = `https://3130-94-27-212-238.ngrok-free.app/api/auth/verify-email?token=${verificationToken}`;
+        const verificationUrl = "http://localhost:5500/frontend/views/verify-email.html?token=" + verificationToken;
         await sendVerificationEmail(email, verificationUrl);
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
@@ -63,9 +63,12 @@ async function verifyEmail(req, res) {
 
 async function loginUser(req, res) {
     const { email, password } = req.body;
-
+    console.log('Raw Request Body:', req.body);
+    console.log('Request Body:', req.body);
+    console.log('Request Headers:', req.headers);
     try {
         const user = await getUserByEmail(email);
+        console.log('User:', user);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -79,13 +82,68 @@ async function loginUser(req, res) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '5h' });
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' });
     }
 }
 
+async function forgotPassword(req, res) {
+    const { email } = req.body;
 
+    try {
+        const user = await getUserByEmail(email);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-module.exports = { registerUser, loginUser, verifyEmail };
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const expiry = new Date(Date.now() + 3600000); // 1 hour from now
+
+        await updateResetPasswordToken(user.id, resetToken, expiry);
+
+        const resetUrl = `http://localhost:5500/frontend/views/reset-password.html?token=${resetToken}`;
+        await sendResetPasswordEmail(user.email, resetUrl);
+
+        res.status(200).json({ message: 'Password reset email sent' });
+    } catch (error) {
+        console.error('Error in forgotPassword:', error);
+        res.status(500).json({ error: 'Error processing request' });
+    }
+}
+
+async function resetPassword(req, res) {
+    const { token, newPassword } = req.body;
+
+    try {
+        const user = await getUserByResetToken(token);
+
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid or expired token' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await updatePassword(user.id, hashedPassword);
+
+        res.status(200).json({ message: 'Password reset successful' });
+    } catch (error) {
+        console.error('Error in resetPassword:', error);
+        res.status(500).json({ error: 'Error resetting password' });
+    }
+}
+
+async function sendResetPasswordEmail(email, resetUrl) {
+    const msg = {
+        to: email,
+        from: 'noreply@arachnid-descent.games',
+        subject: 'Reset Your Password - Arachnid Descent',
+        html: `<p>You requested a password reset.</p>
+               <p>Click the link below to reset your password:</p>
+               <a href="${resetUrl}">${resetUrl}</a>`
+    };
+
+    await sgMail.send(msg);
+}
+
+module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPassword };

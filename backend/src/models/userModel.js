@@ -26,10 +26,26 @@ async function markUserAsVerified(userId) {
     await db.query('UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE id = ?', [userId]);
 }
 
+async function updateResetPasswordToken(userId, resetToken, expiry) {
+    await db.query('UPDATE users SET reset_password_token = ?, reset_token_expiry = ? WHERE id = ?', [resetToken, expiry, userId]);
+}
+
+async function getUserByResetToken(token) {
+    const [rows] = await db.query('SELECT * FROM users WHERE reset_password_token = ? AND reset_token_expiry > ?', [token, new Date()]);
+    return rows[0];
+}
+
+async function updatePassword(userId, hashedPassword) {
+    await db.query('UPDATE users SET password_hash = ?, reset_password_token = NULL, reset_token_expiry = NULL WHERE id = ?', [hashedPassword, userId]);
+}
+
 module.exports = {
      createUser,
       getUserByEmail,
        updateUserVerificationToken,
         getUserByVerificationToken,
-         markUserAsVerified 
+         markUserAsVerified,
+         updateResetPasswordToken,
+         getUserByResetToken,
+         updatePassword
         };

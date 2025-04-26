@@ -1,5 +1,26 @@
-.fa-bars{
-    font-size: 1rem;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
     color: #333;
-    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
+
+#message {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
