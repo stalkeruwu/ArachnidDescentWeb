@@ -146,4 +146,19 @@ async function sendResetPasswordEmail(email, resetUrl) {
     await sgMail.send(msg);
 }
 
-module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPassword };
+async function checkTokenValidity(req, res) {
+    const token = req.headers['authorization']?.split(' ')[1]; // Extract token from Authorization header
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.status(200).json({ message: 'Token is valid', user: decoded });
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid or expired token' });
+    }
+}
+
+module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPassword, checkTokenValidity };
