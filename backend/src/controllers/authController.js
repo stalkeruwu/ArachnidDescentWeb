@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const sgMail = require('../config/sendgridConfig');
-const { createUser, getUserByEmail, updateUserVerificationToken, getUserByVerificationToken, markUserAsVerified, updateResetPasswordToken, getUserByResetToken, updatePassword } = require('../models/userModel');
+const { createUser, getUserByEmail, updateUserVerificationToken, getUserByVerificationToken, markUserAsVerified, updateResetPasswordToken, getUserByResetToken, updatePassword, assignDefaultSkin } = require('../models/userModel');
 
 async function registerUser(req, res) {
     const { username, email, password } = req.body;
@@ -15,6 +15,9 @@ async function registerUser(req, res) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = await createUser(username, email, hashedPassword);
+
+        // Assign the default Pumpkin skin to the new user
+        await assignDefaultSkin(userId);
 
         // Generate a unique verification token
         const verificationToken = crypto.randomBytes(32).toString('hex');

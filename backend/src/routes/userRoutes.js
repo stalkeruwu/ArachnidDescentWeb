@@ -1,22 +1,12 @@
+const express = require('express');
 const { getUserSkins } = require('../controllers/userController');
-const authenticate = require('../middleware/authMiddleware'); // Assuming authentication middleware exists
+const authenticate = require('../middleware/authMiddleware');
 
-async function userRoutes(req, res) {
-    if (req.method === 'GET' && req.url.startsWith('/api/user/skins')) {
-        // Apply authentication middleware
-        await authenticate(req, res);
+const router = express.Router();
 
-        if (!req.user) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Unauthorized' }));
-            return;
-        }
+// Apply authentication middleware to all routes in this router
+router.use(authenticate);
 
-        await getUserSkins(req, res);
-    } else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Not Found' }));
-    }
-}
+router.get('/skins', getUserSkins);
 
-module.exports = userRoutes;
+module.exports = router;

@@ -39,6 +39,11 @@ async function updatePassword(userId, hashedPassword) {
     await db.query('UPDATE users SET password_hash = ?, reset_password_token = NULL, reset_token_expiry = NULL WHERE id = ?', [hashedPassword, userId]);
 }
 
+async function assignDefaultSkin(userId) {
+    const pumpkinSkinId = 1; // Assuming the Pumpkin skin has an ID of 1 in the database
+    await db.query('INSERT INTO user_skin (user_id, skin_id) VALUES (?, ?)', [userId, pumpkinSkinId]);
+}
+
 module.exports = {
      createUser,
       getUserByEmail,
@@ -47,5 +52,6 @@ module.exports = {
          markUserAsVerified,
          updateResetPasswordToken,
          getUserByResetToken,
-         updatePassword
+         updatePassword,
+         assignDefaultSkin
         };

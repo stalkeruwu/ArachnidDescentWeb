@@ -17,7 +17,12 @@ async function getAllSkinsWithOwnership(userId) {
         LEFT JOIN user_skin ON skins.id = user_skin.skin_id AND user_skin.user_id = ?
     `;
     const [rows] = await db.query(query, [userId]);
-    return rows;
+
+    // Convert is_owned to a boolean
+    return rows.map(row => ({
+        ...row,
+        is_owned: !!row.is_owned, // Convert 1/0 to true/false
+    }));
 }
 
 module.exports = {
