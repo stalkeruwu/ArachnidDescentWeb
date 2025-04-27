@@ -82,10 +82,15 @@ document.getElementById('updatePasswordForm').addEventListener('submit', async (
 
         const data = await response.json();
         if (response.ok) {
+            // Notify the user about the password update and logout
             Swal.fire({
-                icon: 'success',
-                title: 'Password Changed',
-                text: 'Your password has been updated successfully.',
+                icon: 'info',
+                title: 'Password Updated',
+                text: 'Your password has been updated successfully. You will now be logged out.',
+            }).then(() => {
+                // Log out the user
+                localStorage.removeItem('authToken'); // Remove the token
+                window.location.href = 'login.html'; // Redirect to login page
             });
         } else {
             Swal.fire({

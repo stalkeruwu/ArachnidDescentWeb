@@ -1,3 +1,12 @@
+body {
+    background: url('../img/Backround.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Cabin', sans-serif; /* Matches the navbar font */
+    position: relative; /* Required for the overlay */
+}
+
+
 #main {
     margin-top: 150px; /* Ensures the container does not collide with the header */
     padding: 20px;

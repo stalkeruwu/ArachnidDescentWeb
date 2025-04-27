@@ -13,7 +13,7 @@ createApp({
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming token is stored in localStorage
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Assuming token is stored in localStorage
                     }
                 });
 
@@ -34,7 +34,7 @@ createApp({
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                     }
                 });
 
@@ -70,7 +70,7 @@ createApp({
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                     },
                     body: JSON.stringify({ skinId })
                 });
