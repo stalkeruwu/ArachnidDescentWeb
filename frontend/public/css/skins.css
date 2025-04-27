@@ -1,0 +1,81 @@
+#main {
+    margin-top: 150px; /* Ensures the container does not collide with the header */
+    padding: 20px;
+    max-width: 1200px;
+
+}
+
+.card {
+    max-width: 250px; /* Makes the cards smaller */
+    margin: 0 auto; /* Centers the cards */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    text-align: center;
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #f8f9fa;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #dcdcdc;
+    margin-bottom: 10px;
+}
+
+.btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.rarity-common {
+    border-color: #6c757d; /* Gray for common */
+}
+
+.rarity-rare {
+    border-color: #007bff; /* Blue for rare */
+}
+
+.rarity-epic {
+    border-color: #6f42c1; /* Purple for epic */
+}
+
+.rarity-legendary {
+    border-color: #ffc107; /* Gold for legendary */
+}

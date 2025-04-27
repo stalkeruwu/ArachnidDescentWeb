@@ -44,14 +44,20 @@ async function assignDefaultSkin(userId) {
     await db.query('INSERT INTO user_skin (user_id, skin_id) VALUES (?, ?)', [userId, pumpkinSkinId]);
 }
 
+async function getUserBalanceAndName(userId) {
+    const [rows] = await db.query('SELECT username, balance FROM users WHERE id = ?', [userId]);
+    return rows[0];
+}
+
 module.exports = {
-     createUser,
-      getUserByEmail,
-       updateUserVerificationToken,
-        getUserByVerificationToken,
-         markUserAsVerified,
-         updateResetPasswordToken,
-         getUserByResetToken,
-         updatePassword,
-         assignDefaultSkin
-        };
+    createUser,
+    getUserByEmail,
+    updateUserVerificationToken,
+    getUserByVerificationToken,
+    markUserAsVerified,
+    updateResetPasswordToken,
+    getUserByResetToken,
+    updatePassword,
+    assignDefaultSkin,
+    getUserBalanceAndName,
+};

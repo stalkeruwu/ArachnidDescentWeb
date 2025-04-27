@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUserSkins } = require('../controllers/userController');
+const { getUserSkins, getUserDetails } = require('../controllers/userController');
 const authenticate = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -8,5 +8,6 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/skins', getUserSkins);
+router.get('/details', getUserDetails); // Assuming you have a getUserDetails function in your controller
 
 module.exports = router;

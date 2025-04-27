@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html id="app" data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Arachnid Descent</title>
+    <link rel="stylesheet" href="../public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700&amp;display=swap">
+    <link rel="stylesheet" href="../public/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/css/Overlay-Login-Form.css">
+    <link rel="stylesheet" href="../public/css/skins.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body  id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
+    <nav class="navbar navbar-expand-md fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="#">Arachnid Descent</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" value="Menu"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item nav-link"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link" href="#download">download</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link" href="#contact">contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="main">
+    
+        <div>
+            <h3>Skins</h3>
+            <p>Welcome to the skins page! Here you can view and purchase skins for your character.</p>
+        </div>
+        <h2>Balance:{{user.balance || 0}}</h2>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4" v-for="skin in skins" :key="skin.skin_id">
+                    <div class="card mb-4" :class="`rarity-${skin.rarity_name.toLowerCase()}`">
+                        <img :src="'../public/img/faces/' + skin.skin_image_url" class="card-img-top" alt="Skin Image">
+                        <div class="card-body">
+                          <h5 class="card-title">{{skin.skin_name}}</h5>
+                          <p class="card-text">Rarity: {{ skin.rarity_name }}</p>
+                          <p class="card-text">Price: {{ skin.rarity_price }}</p>
+
+                          <a v-if="skin.is_owned" href="#" class="btn btn-success">Owned</a>
+                          <a v-else href="#" class="btn btn-primary">Buy</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <p>Copyright ©&nbsp;Arachnid Descent 2025</p>
+        </div>
+    </footer>
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/js/grayscale.js"></script>
+    <script src="../public/js/skins.js" type="module"></script>
+</body>
+
+</html>
