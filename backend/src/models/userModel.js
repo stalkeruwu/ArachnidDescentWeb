@@ -14,7 +14,7 @@ async function getUserByEmail(email) {
 }
 
 async function updateUserVerificationToken(userId, token) {
-    await db.query('UPDATE users SET verification_token = ? WHERE id = ?', [token, userId]);
+    await db.query('UPDATE users SET verification_token = ?, is_verified = FALSE WHERE id = ?', [token, userId]);
 }
 
 async function getUserByVerificationToken(token) {
@@ -49,6 +49,15 @@ async function getUserBalanceAndName(userId) {
     return rows[0];
 }
 
+async function updateUserEmail(userId, email) {
+    await db.query('UPDATE users SET email = ? WHERE id = ?', [email, userId]);
+}
+
+async function getUserById(userId) {
+    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+    return rows[0];
+}
+
 module.exports = {
     createUser,
     getUserByEmail,
@@ -60,4 +69,7 @@ module.exports = {
     updatePassword,
     assignDefaultSkin,
     getUserBalanceAndName,
+    updateUserEmail,
+    getUserById
+    
 };

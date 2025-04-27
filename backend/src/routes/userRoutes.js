@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUserSkins, getUserDetails, buySkin } = require('../controllers/userController');
+const { getUserSkins, getUserDetails, buySkin, updateEmail, updateUserPassword } = require('../controllers/userController');
 const authenticate = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -8,7 +8,9 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/skins', getUserSkins);
-router.get('/details', getUserDetails);// Assuming you have a getUserDetails function in your controller
-router.post('/buy-skin', buySkin); // New route for purchasing a skin
+router.get('/details', getUserDetails); 
+router.post('/buy-skin', buySkin); 
+router.post('/update-email', updateEmail);
+router.post('/update-password',updateUserPassword);
 
 module.exports = router;

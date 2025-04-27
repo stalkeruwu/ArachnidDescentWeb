@@ -1,5 +1,6 @@
 import API_BASE_URL from './config.js';
 
+
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -9,7 +10,11 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const confirmPassword = document.getElementById('confirmPassword').value;
 
     if (password !== confirmPassword) {
-        alert('Passwords do not match!');
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Passwords do not match!',
+        });
         return;
     }
 
@@ -22,11 +27,24 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
 
         const data = await response.json();
         if (response.ok) {
-            alert('Registration successful!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Registration Successful!',
+                text: 'Please check your email to verify your account.',
+            });
         } else {
-            alert(`Error: ${data.error}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                text: data.error || 'An unexpected error occurred.',
+            });
         }
     } catch (error) {
         console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred. Please try again later.',
+        });
     }
 });

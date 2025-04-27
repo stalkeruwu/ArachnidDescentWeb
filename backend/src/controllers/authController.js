@@ -85,7 +85,7 @@ async function loginUser(req, res) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '5h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '6h' });
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
         res.status(500).json({ error: 'Error logging in' });
@@ -164,4 +164,4 @@ async function checkTokenValidity(req, res) {
     }
 }
 
-module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPassword, checkTokenValidity };
+module.exports = { registerUser, loginUser, verifyEmail, forgotPassword, resetPassword, checkTokenValidity, sendVerificationEmail };

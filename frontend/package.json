@@ -10,7 +10,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "2": "^3.0.0",
     "axios": "^1.8.4",
-    "bootstrap": "^5.3.5"
+    "bootstrap": "^5.3.5",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.6.13"
   }
 }

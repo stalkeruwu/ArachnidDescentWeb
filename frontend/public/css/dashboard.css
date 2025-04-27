@@ -1,0 +1,62 @@
+/* General body styling */
+body {
+    background: url('../img/Backround.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Cabin', sans-serif; /* Matches the navbar font */
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    padding: 100px 20px 50px;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* Card Styling */
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+a{
+    font-family: 'Poppins', sans-serif;
+}

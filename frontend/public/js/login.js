@@ -15,13 +15,30 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
         const data = await response.json();
         if (response.ok) {
-            alert('Login successful!');
-            // Optionally, store the token in localStorage or sessionStorage
-            localStorage.setItem('token', data.token);
+            // Store the token in localStorage
+            localStorage.setItem('authToken', data.token);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful!',
+                text: 'Welcome back!',
+            }).then(() => {
+                // Redirect to the dashboard
+                window.location.href = 'dashboard.html';
+            });
         } else {
-            alert(`Error: ${data.error}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: data.error || 'Invalid email or password.',
+            });
         }
     } catch (error) {
         console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred. Please try again later.',
+        });
     }
 });
