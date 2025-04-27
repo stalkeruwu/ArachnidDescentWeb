@@ -64,8 +64,41 @@ createApp({
         };
     },
     methods:{
-        buy(id){
-            
+        async buy(skinId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/buy`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ skinId })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to purchase skin');
+                }
+
+                alert('Skin purchased successfully!');
+
+                // Update the skin to owned
+                const skin = this.skins.find(s => s.skin_id === skinId);
+                if (skin) {
+                    skin.is_owned = true;
+                }
+
+                await fetchSkins(); // Refresh the skins list
+            } catch (error) {
+                console.error('Error purchasing skin:', error);
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000); // Hide the error message after 5 seconds
+            }
         }
     }
 })

@@ -25,7 +25,62 @@ async function getAllSkinsWithOwnership(userId) {
     }));
 }
 
+async function purchaseSkin(userId, skinId) {
+    const connection = await db.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // Check if the user already owns the skin
+        const [ownershipRows] = await connection.query(
+            `SELECT * FROM user_skin WHERE user_id = ? AND skin_id = ?`,
+            [userId, skinId]
+        );
+        if (ownershipRows.length > 0) {
+            throw new Error('User already owns this skin');
+        }
+
+        // Get the skin price and user balance
+        const [[skin]] = await connection.query(
+            `SELECT rarities.price AS skin_price FROM skins 
+             JOIN rarities ON skins.rarity_id = rarities.id WHERE skins.id = ?`,
+            [skinId]
+        );
+        const [[user]] = await connection.query(
+            `SELECT balance FROM users WHERE id = ?`,
+            [userId]
+        );
+
+        if (!skin || !user) {
+            throw new Error('Skin or user not found');
+        }
+
+        if (user.balance < skin.skin_price) {
+            throw new Error('Insufficient balance');
+        }
+
+        // Deduct the price from the user's balance
+        await connection.query(
+            `UPDATE users SET balance = balance - ? WHERE id = ?`,
+            [skin.skin_price, userId]
+        );
+
+        // Mark the skin as owned by the user
+        await connection.query(
+            `INSERT INTO user_skin (user_id, skin_id) VALUES (?, ?)`,
+            [userId, skinId]
+        );
+
+        await connection.commit();
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally {
+        connection.release();
+    }
+}
+
 module.exports = {
     getAllSkinsWithOwnership,
+    purchaseSkin,
 };
 
