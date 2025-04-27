@@ -1,4 +1,4 @@
-const { getAllSkinsWithOwnership } = require('../models/skinModel');
+const { getAllSkinsWithOwnership, purchaseSkin } = require('../models/skinModel');
 const { getUserBalanceAndName } = require('../models/userModel');
 
 async function getUserSkins(req, res) {
@@ -25,7 +25,21 @@ async function getUserDetails(req, res) {
     }
 }
 
+async function buySkin(req, res) {
+    const userId = req.user.id; // Assuming user ID is available in the request object after authentication
+    const { skinId } = req.body;
+
+    try {
+        await purchaseSkin(userId, skinId);
+        res.status(200).json({ message: 'Skin purchased successfully' });
+    } catch (error) {
+        console.error('Error purchasing skin:', error);
+        res.status(400).json({ error: error.message });
+    }
+}
+
 module.exports = {
     getUserSkins,
-    getUserDetails, // Exporting the new function
+    getUserDetails,
+    buySkin, // Exporting the new function
 };

@@ -44,7 +44,7 @@
                           <p class="card-text">Price: {{ skin.rarity_price }}</p>
 
                           <a v-if="skin.is_owned" href="#" class="btn btn-success">Owned</a>
-                          <a v-else href="#" class="btn btn-primary">Buy</a>
+                          <a v-else href="#" class="btn btn-primary" @click="buy(skin.skin_id)">Buy</a>
                         </div>
                       </div>
                 </div>
