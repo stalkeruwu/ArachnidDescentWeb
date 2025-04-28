@@ -42,3 +42,19 @@ a{
 .footer{
     background-color: rgb(26, 28, 29);
 }
+
+.forgot-password {
+    margin-top: -10px; /* Adjust spacing above */
+    margin-bottom: 15px; /* Add spacing below */
+    font-size: 0.9em; /* Slightly smaller font size */
+    text-align: left; /* Align the text to the left */
+}
+
+.forgot-password a {
+    color: #007bff; /* Bootstrap primary color */
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

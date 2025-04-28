@@ -56,7 +56,6 @@ input:focus ~ label, input:valid ~ label {
   height: 100vh;
   background-position: center;
   background-size: cover;
-  background-color: rgba(75, 75, 75, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;

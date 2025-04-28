@@ -66,12 +66,9 @@ async function verifyEmail(req, res) {
 
 async function loginUser(req, res) {
     const { email, password } = req.body;
-    console.log('Raw Request Body:', req.body);
-    console.log('Request Body:', req.body);
-    console.log('Request Headers:', req.headers);
+
     try {
         const user = await getUserByEmail(email);
-        console.log('User:', user);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -88,6 +85,7 @@ async function loginUser(req, res) {
         const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '6h' });
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
+        console.error('Error logging in:', error);
         res.status(500).json({ error: 'Error logging in' });
     }
 }

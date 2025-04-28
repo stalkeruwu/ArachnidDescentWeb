@@ -57,31 +57,28 @@
       </div>
     </nav>
     <section class="login-section">
-      <div class="section-bg-overlay">
+      <div style="background-image:url('../public/img/gray-background.jpg');" class="section-bg-overlay">
         <div class="form-box">
           <div class="form-value">
             <form action id="loginForm">
               <div class="inputbox">
-                <input id="email" type="email" required /><label for
-                  >Email</label
-                >
+                  <input id="email" type="email" required />
+                  <label for="email">Email</label>
               </div>
               <div class="inputbox">
-                <input id="username" type="text" required /><label for
-                  >Username</label
-                >
+                  <input id="password" type="password" required />
+                  <label for="password">Password</label>
               </div>
-              <div class="inputbox"><input id="password" type="password" required /><label for>Password</label></div>
-              <button type="submit">Login</button>
               <div class="forgot-password">
-                <p><a href="forgot-password.html">Forgot your password?</a></p>
+                  <a href="forgot-password.html">Forgot your password?</a>
               </div>
-              <div class="register">
-                <p>
-                  Don't have an account? <a href="register.html">Register</a>
-                </p>
+              <button type="submit">Login</button>
+              <div class="register text-center">
+                  <p>
+                      Don't have an account? <a href="register.html">Register</a>
+                  </p>
               </div>
-            </form>
+          </form>
           </div>
         </div>
       </div>
