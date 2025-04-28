@@ -39,9 +39,18 @@ async function sendVerificationEmail(email, verificationUrl) {
         to: email,
         from: 'noreply@arachnid-descent.games', // Replace with your verified SendGrid sender email
         subject: 'Verify Your Email - Arachnid Descent',
-        html: `<p>Thank you for registering for Arachnid Descent!</p>
-               <p>Please verify your email by clicking the link below:</p>
-               <a href="${verificationUrl}">${verificationUrl}</a>`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+                <h2 style="color: #333; text-align: center;">Welcome to Arachnid Descent!</h2>
+                <p style="color: #555; font-size: 16px;">Thank you for registering for Arachnid Descent! Please verify your email by clicking the button below:</p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="${verificationUrl}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px;">Verify Email</a>
+                </div>
+                <p style="color: #555; font-size: 14px;">If the button above doesn't work, copy and paste the following link into your browser:</p>
+                <p style="color: #007bff; font-size: 14px; word-wrap: break-word;">${verificationUrl}</p>
+                <p style="color: #555; font-size: 14px;">If you did not register for Arachnid Descent, please ignore this email.</p>
+            </div>
+        `,
     };
 
     await sgMail.send(msg);
@@ -139,9 +148,18 @@ async function sendResetPasswordEmail(email, resetUrl) {
         to: email,
         from: 'noreply@arachnid-descent.games',
         subject: 'Reset Your Password - Arachnid Descent',
-        html: `<p>You requested a password reset.</p>
-               <p>Click the link below to reset your password:</p>
-               <a href="${resetUrl}">${resetUrl}</a>`
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+                <h2 style="color: #333; text-align: center;">Reset Your Password</h2>
+                <p style="color: #555; font-size: 16px;">You requested a password reset for your Arachnid Descent account. Click the button below to reset your password:</p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px;">Reset Password</a>
+                </div>
+                <p style="color: #555; font-size: 14px;">If the button above doesn't work, copy and paste the following link into your browser:</p>
+                <p style="color: #007bff; font-size: 14px; word-wrap: break-word;">${resetUrl}</p>
+                <p style="color: #555; font-size: 14px;">If you did not request a password reset, please ignore this email.</p>
+            </div>
+        `,
     };
 
     await sgMail.send(msg);
