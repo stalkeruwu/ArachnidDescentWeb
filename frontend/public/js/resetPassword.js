@@ -5,17 +5,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = urlParams.get('token');
 
     if (!token) {
-        alert('Invalid or missing token.');
-        window.location.href = 'login.html';
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Token',
+            text: 'Invalid or missing token.',
+            confirmButtonText: 'Go to Login',
+        }).then(() => {
+            window.location.href = 'login.html';
+        });
         return;
     }
-
-
 
     document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Check if passwords match
+        if (newPassword !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Passwords do not match. Please try again.',
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
 
         try {
             const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
@@ -26,14 +42,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert('Password reset successful. You can now log in with your new password.');
-                window.location.href = 'login.html';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password Reset Successful',
+                    text: 'You can now log in with your new password.',
+                    confirmButtonText: 'Go to Login',
+                }).then(() => {
+                    window.location.href = 'login.html';
+                });
             } else {
-                alert(`Error: ${data.error}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.error || 'Failed to reset password.',
+                    confirmButtonText: 'Try Again',
+                });
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An unexpected error occurred.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Unexpected Error',
+                text: 'An unexpected error occurred. Please try again later.',
+                confirmButtonText: 'OK',
+            });
         }
     });
 });

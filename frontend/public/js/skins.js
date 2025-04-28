@@ -2,6 +2,7 @@ const { createApp, ref } = Vue
 import API_BASE_URL from './config.js';
 
 
+
 createApp({
     setup() {
         const skins = ref([]);
@@ -80,7 +81,13 @@ createApp({
                     throw new Error(errorData.error || 'Failed to purchase skin');
                 }
 
-                alert('Skin purchased successfully!');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Skin purchased successfully!',
+                    timer: 3000,
+                    showConfirmButton: true
+                });
 
                 // Update the skin to owned
                 const skin = this.skins.find(s => s.skin_id === skinId);
@@ -88,9 +95,16 @@ createApp({
                     skin.is_owned = true;
                 }
 
-                await fetchSkins(); // Refresh the skins list
+               
             } catch (error) {
-                console.error('Error purchasing skin:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message,
+                    timer: 5000,
+                    showConfirmButton: false
+                });
+                
                 const errorMessage = document.getElementById('error-message');
                 errorMessage.textContent = error.message;
                 errorMessage.style.display = 'block';

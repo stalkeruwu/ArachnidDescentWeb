@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="../public/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="../public/css/Overlay-Login-Form.css">
     <link rel="stylesheet" href="../public/css/skins.css">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body  id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
@@ -36,26 +38,24 @@
         </div>
     </nav>
     <div id="main">
-    
         <div>
-            <h3>Skins</h3>
-            <p>Welcome to the skins page! Here you can view and purchase skins for your character.</p>
+            <h3 class="text-center fs-1">Skins</h3>
+            <p class="text-center fs-4">Welcome to the skins page! Here you can view and purchase skins for your character.</p>
         </div>
-        <h2>Balance:{{user.balance || 0}}</h2>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-4" v-for="skin in skins" :key="skin.skin_id">
-                    <div class="card mb-4" :class="`rarity-${skin.rarity_name.toLowerCase()}`">
+        <h2 class="text-center">Balance: {{ user.balance || 0 }}</h2>
+        <div class="container-fluid mt-5">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-2">
+                <div class="col" v-for="skin in skins" :key="skin.skin_id">
+                    <div class="card h-100 mb-4" :class="`rarity-${skin.rarity_name.toLowerCase()}`">
                         <img :src="'../public/img/faces/' + skin.skin_image_url" class="card-img-top" alt="Skin Image">
                         <div class="card-body">
-                          <h5 class="card-title">{{skin.skin_name}}</h5>
-                          <p class="card-text">Rarity: {{ skin.rarity_name }}</p>
-                          <p class="card-text">Price: {{ skin.rarity_price }}</p>
-
-                          <a v-if="skin.is_owned" href="#" class="btn btn-success">Owned</a>
-                          <a v-else href="#" class="btn btn-primary" @click="buy(skin.skin_id)">Buy</a>
+                            <h5 class="card-title">{{ skin.skin_name }}</h5>
+                            <p class="card-text">Rarity: {{ skin.rarity_name }}</p>
+                            <p class="card-text">Price: {{ skin.rarity_price }}</p>
+                            <a v-if="skin.is_owned" href="#" class="btn btn-success">Owned</a>
+                            <a v-else href="#" class="btn btn-primary" @click="buy(skin.skin_id)">Buy</a>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>
         </div>

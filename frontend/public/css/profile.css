@@ -1,0 +1,13 @@
+.card {
+    background-color: rgba(44, 44, 44, 0.5); /* Match the skin card background */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Match the border */
+    border-radius: 10px; /* Match the border radius */
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Match the shadow */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
