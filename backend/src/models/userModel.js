@@ -57,6 +57,9 @@ async function getUserById(userId) {
     const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
     return rows[0];
 }
+async function changeUserBalance(userId, amount) {
+    await db.query('UPDATE users SET balance = balance + ? WHERE id = ?', [amount, userId]);
+}
 
 module.exports = {
     createUser,
@@ -70,6 +73,7 @@ module.exports = {
     assignDefaultSkin,
     getUserBalanceAndName,
     updateUserEmail,
-    getUserById
+    getUserById,
+    changeUserBalance,
     
 };

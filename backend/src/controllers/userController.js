@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { getAllSkinsWithOwnership, purchaseSkin } = require('../models/skinModel');
-const { getUserBalanceAndName, updateUserEmail, getUserById, updatePassword, getUserByEmail, updateUserVerificationToken } = require('../models/userModel');
+const { getUserBalanceAndName, updateUserEmail, getUserById, updatePassword, getUserByEmail, updateUserVerificationToken, changeUserBalance } = require('../models/userModel');
 const { sendVerificationEmail } = require('./authController');
 const crypto = require('crypto');
 
@@ -72,7 +72,7 @@ async function updateEmail(req, res) {
         await updateUserVerificationToken(userId, verificationToken);
 
         // Send a verification email to the new email address
-        const verificationUrl = `http://localhost:5500/frontend/views/verify-email.html?token=${verificationToken}`;
+        const verificationUrl = `https://arachnid-descent.games/verify-email.html?token=${verificationToken}`;
         await sendVerificationEmail(email, verificationUrl);
 
         // Update the email in the database
@@ -115,10 +115,29 @@ async function updateUserPassword(req, res) {
     }
 }
 
+async function changeBalance(req, res) {
+    const userId = req.user.id; // Assuming user ID is extracted from the authenticated request
+    const { amount } = req.body;
+
+    if (typeof amount !== 'number') {
+        return res.status(400).json({ error: 'Amount must be a number' });
+    }
+
+    try {
+        await changeUserBalance(userId, amount);
+        res.status(200).json({ message: 'Balance updated successfully' });
+    } catch (error) {
+        console.error('Error updating balance:', error);
+        res.status(500).json({ error: 'Error updating balance' });
+    }
+}
+
+
 module.exports = {
     getUserSkins,
     getUserDetails,
     buySkin, // Exporting the new function
     updateEmail,
     updateUserPassword,
+    changeBalance,
 };
