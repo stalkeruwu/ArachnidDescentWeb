@@ -66,7 +66,7 @@ createApp({
     methods:{
         async buy(skinId) {
             try {
-                const response = await fetch(`${API_BASE_URL}/user/buy`, {
+                const response = await fetch(`${API_BASE_URL}/user/buy-skin`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
