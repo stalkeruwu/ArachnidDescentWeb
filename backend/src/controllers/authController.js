@@ -24,7 +24,7 @@ async function registerUser(req, res) {
         await updateUserVerificationToken(userId, verificationToken);
 
         // Send verification email
-        const verificationUrl = "http://localhost:5500/frontend/views/verify-email.html?token=" + verificationToken;
+        const verificationUrl = "https://arachnid-descent.games/verify-email.html?token=" + verificationToken;
         await sendVerificationEmail(email, verificationUrl);
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to verify your account.' });
@@ -104,7 +104,7 @@ async function forgotPassword(req, res) {
 
         await updateResetPasswordToken(user.id, resetToken, expiry);
 
-        const resetUrl = `http://localhost:5500/frontend/views/reset-password.html?token=${resetToken}`;
+        const resetUrl = `https://arachnid-descent.games/reset-password.html?token=${resetToken}`;
         await sendResetPasswordEmail(user.email, resetUrl);
 
         res.status(200).json({ message: 'Password reset email sent' });
